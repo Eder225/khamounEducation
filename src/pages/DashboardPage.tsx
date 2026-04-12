@@ -223,6 +223,21 @@ export const DashboardPage = () => {
             </div>
           </div>
         </div>
+
+        {role === 'admin' && (
+          <div className="px-3 pb-5 mt-auto border-t border-white/10 pt-4">
+            <p className="px-3 mb-2 text-[10px] font-label font-semibold tracking-[1.8px] uppercase text-white/25">
+              Administration
+            </p>
+            <button 
+              onClick={() => navigate('/teacher')}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-khamoun-secondary hover:bg-white/8 transition-all duration-200"
+            >
+              <User size={17} className="flex-shrink-0" />
+              <span>Espace Professeur</span>
+            </button>
+          </div>
+        )}
       </aside>
 
       {/* ── Main ─────────────────────────────────────────────────────── */}

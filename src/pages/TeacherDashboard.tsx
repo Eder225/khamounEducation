@@ -14,7 +14,8 @@ import {
   Search,
   Settings,
   X,
-  Upload
+  Upload,
+  LayoutDashboard
 } from 'lucide-react';
 import { Logo } from '../components/Logo';
 
@@ -229,6 +230,16 @@ export const TeacherDashboard = () => {
             <MessageSquare size={18} />
             <span>Messagerie</span>
           </button>
+          
+          {user && (useContext(AuthContext).role === 'admin') && (
+            <div className="pt-4 mt-4 border-t border-slate-100">
+              <p className="px-3 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Administration</p>
+              <button onClick={() => navigate('/dashboard')} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-bold text-khamoun-secondary hover:bg-khamoun-secondary/5 transition-all">
+                <LayoutDashboard size={18} />
+                <span>Espace Élève</span>
+              </button>
+            </div>
+          )}
         </nav>
         
         <div className="p-4 border-t border-slate-100">
