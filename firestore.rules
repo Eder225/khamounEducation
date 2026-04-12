@@ -1,0 +1,146 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: users
+    // Document ID: {userId}
+    // Fields:
+    //   - uid: string (required)
+    //   - email: string (required)
+    //   - name: string (required, < 100 chars)
+    //   - role: string (required, 'student', 'parent', 'teacher', 'admin')
+    //   - createdAt: timestamp (required, immutable)
+    //
+    // Collection: courses
+    // Document ID: {courseId}
+    // Fields:
+    //   - title: string (required, < 200 chars)
+    //   - description: string (required, < 2000 chars)
+    //   - level: string (required, '6eme', '5eme', '4eme', '3eme', '2nde', '1ere', 'terminale')
+    //   - subject: string (required, < 100 chars)
+    //   - authorId: string (required, immutable)
+    //   - createdAt: timestamp (required, immutable)
+    //
+    // Collection: progress
+    // Document ID: {progressId}
+    // Fields:
+    //   - studentId: string (required, immutable)
+    //   - courseId: string (required, immutable)
+    //   - completed: boolean (required)
+    //   - score: number (required, 0-100)
+    //   - lastAccessed: timestamp (required)
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.uid;
+    }
+    function uidUnchanged() {
+      return !('uid' in request.resource.data) || request.resource.data.uid == request.auth.uid;
+    }
+    function uidNotModified() {
+      return !('uid' in request.resource.data) || request.resource.data.uid == resource.data.uid;
+    }
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+    function validStringLength(field, minLen, maxLen) {
+      return request.resource.data[field] is string &&
+        request.resource.data[field].size() >= minLen &&
+        request.resource.data[field].size() <= maxLen;
+    }
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+    function areImmutableFieldsUnchanged(fields) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
+    }
+    function isAdmin() {
+      return isAuthenticated() &&
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "henoceder@gmail.com" && request.auth.token.email_verified == true));
+    }
+    function isTeacher() {
+      return isAuthenticated() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'teacher';
+    }
+
+    // Domain Validators
+    function isValidUser(data) {
+      return hasOnlyAllowedFields(['uid', 'email', 'name', 'role', 'createdAt']) &&
+             data.uid is string && data.uid.size() > 0 && data.uid.size() < 50 &&
+             data.email is string && isValidEmail(data.email) &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.role in ['student', 'parent', 'teacher', 'admin'] &&
+             data.createdAt is timestamp;
+    }
+
+    function isInitialRoleSafe(role) {
+      // Prevent self-registration as admin or teacher
+      return role in ['student', 'parent'];
+    }
+
+    function isValidCourse(data) {
+      return hasOnlyAllowedFields(['title', 'description', 'level', 'subject', 'authorId', 'createdAt']) &&
+             data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
+             data.description is string && data.description.size() > 0 && data.description.size() < 2000 &&
+             data.level in ['6eme', '5eme', '4eme', '3eme', '2nde', '1ere', 'terminale'] &&
+             data.subject is string && data.subject.size() > 0 && data.subject.size() < 100 &&
+             data.authorId is string && data.authorId.size() > 0 && data.authorId.size() < 50 &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidProgress(data) {
+      return hasOnlyAllowedFields(['studentId', 'courseId', 'completed', 'score', 'lastAccessed']) &&
+             data.studentId is string && data.studentId.size() > 0 && data.studentId.size() < 50 &&
+             data.courseId is string && data.courseId.size() > 0 && data.courseId.size() < 50 &&
+             data.completed is bool &&
+             data.score is number && data.score >= 0 && data.score <= 100 &&
+             data.lastAccessed is timestamp;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      // Only allow self-registration with 'student' or 'parent' role
+      allow create: if isAuthenticated() && isValidUser(request.resource.data) &&
+                    isOwner(userId) && uidUnchanged() && 
+                    isInitialRoleSafe(request.resource.data.role);
+      allow update: if isAuthenticated() && isValidUser(request.resource.data) &&
+                    ((isOwner(userId) && uidNotModified() && areImmutableFieldsUnchanged(['createdAt', 'role'])) || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /courses/{courseId} {
+      allow read: if isAuthenticated();
+      allow create: if (isTeacher() || isAdmin()) && isValidCourse(request.resource.data) &&
+                    request.resource.data.authorId == request.auth.uid;
+      allow update: if (isAdmin() || (isTeacher() && resource.data.authorId == request.auth.uid)) &&
+                    isValidCourse(request.resource.data) &&
+                    areImmutableFieldsUnchanged(['authorId', 'createdAt']);
+      allow delete: if isAdmin() || (isTeacher() && resource.data.authorId == request.auth.uid);
+    }
+
+    match /progress/{progressId} {
+      allow read: if isAuthenticated() && (resource.data.studentId == request.auth.uid || isAdmin() || isTeacher());
+      allow create: if isAuthenticated() && isValidProgress(request.resource.data) &&
+                    request.resource.data.studentId == request.auth.uid;
+      allow update: if isAuthenticated() && isValidProgress(request.resource.data) &&
+                    resource.data.studentId == request.auth.uid &&
+                    areImmutableFieldsUnchanged(['studentId', 'courseId']);
+      allow delete: if isAdmin();
+    }
+  }
+}

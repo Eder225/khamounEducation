@@ -1,0 +1,104 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for students, parents, teachers, and admins.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "name": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["student", "parent", "teacher", "admin"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "name", "role", "createdAt"]
+    },
+    "Course": {
+      "title": "Course",
+      "description": "Educational course or lesson.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": ["6eme", "5eme", "4eme", "3eme", "2nde", "1ere", "terminale"]
+        },
+        "subject": {
+          "type": "string"
+        },
+        "authorId": {
+          "type": "string",
+          "description": "UID of the teacher who created the course"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["title", "description", "level", "subject", "authorId", "createdAt"]
+    },
+    "Progress": {
+      "title": "Progress",
+      "description": "Student progress in a specific course.",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string"
+        },
+        "courseId": {
+          "type": "string"
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "score": {
+          "type": "number"
+        },
+        "lastAccessed": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["studentId", "courseId", "completed", "score", "lastAccessed"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profiles."
+    },
+    "/courses/{courseId}": {
+      "schema": {
+        "$ref": "#/entities/Course"
+      },
+      "description": "Stores educational courses."
+    },
+    "/progress/{progressId}": {
+      "schema": {
+        "$ref": "#/entities/Progress"
+      },
+      "description": "Stores student progress records."
+    }
+  }
+}
