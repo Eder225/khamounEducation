@@ -45,20 +45,20 @@ export const NetworkBackground = () => {
 
     const initParticles = () => {
       particles = [];
-      // Number of particles depends on screen size, keep it light
-      const numParticles = Math.floor((canvas.width * canvas.height) / 12000);
+      // Increased particle density (was / 12000)
+      const numParticles = Math.floor((canvas.width * canvas.height) / 8000);
       
       for (let i = 0; i < numParticles; i++) {
-        // 70% chance of being slate, 30% chance of being a brand color
-        const isBrandColor = Math.random() > 0.7;
+        // 60% chance of being slate, 40% chance of being a brand color (more color)
+        const isBrandColor = Math.random() > 0.6;
         const colorIndex = isBrandColor ? Math.floor(Math.random() * 3) : 3;
         
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.6,
-          vy: (Math.random() - 0.5) * 0.6,
-          radius: Math.random() * 2 + 1,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+          radius: Math.random() * 2 + 0.8,
           color: colors[colorIndex]
         });
       }
@@ -83,14 +83,16 @@ export const NetworkBackground = () => {
           const dy = p.y - p2.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 150) {
+          // Increased connection distance (was 150)
+          const connectionLimit = 180;
+          if (distance < connectionLimit) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            // Opacity based on distance
-            const opacity = 1 - distance / 150;
-            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.25})`; // slate-400 with low opacity
-            ctx.lineWidth = 1;
+            // Slightly higher opacity for connections
+            const opacity = 1 - distance / connectionLimit;
+            ctx.strokeStyle = `rgba(148, 163, 184, ${opacity * 0.35})`; 
+            ctx.lineWidth = 0.8;
             ctx.stroke();
           }
         }
