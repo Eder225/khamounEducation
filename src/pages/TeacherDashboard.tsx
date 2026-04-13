@@ -58,7 +58,7 @@ interface Conversation {
 }
 
 export const TeacherDashboard = () => {
-  const { user, isAuthReady } = useContext(AuthContext);
+  const { user, role, isAuthReady } = useContext(AuthContext);
   const navigate = useNavigate();
   const [userData, setUserData] = useState<{ name?: string, role?: string } | null>(null);
   const [activeTab, setActiveTab] = useState('classes');
@@ -231,7 +231,7 @@ export const TeacherDashboard = () => {
             <span>Messagerie</span>
           </button>
           
-          {user && (useContext(AuthContext).role === 'admin') && (
+          {user && (role === 'admin') && (
             <div className="pt-4 mt-4 border-t border-slate-100">
               <p className="px-3 mb-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Administration</p>
               <button onClick={() => navigate('/dashboard')} className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-bold text-khamoun-secondary hover:bg-khamoun-secondary/5 transition-all">
