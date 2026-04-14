@@ -88,7 +88,6 @@ const LEADERBOARD: LeaderboardEntry[] = [
 const NAV_ITEMS = [
   { label: 'Tableau de bord', icon: LayoutDashboard, to: '/dashboard', badge: null },
   { label: 'Mes Cours', icon: BookOpen, to: '/dashboard/courses', badge: '3' },
-  { label: 'Réservation PC', icon: Monitor, to: '/dashboard/booking', badge: null },
   { label: 'Classement', icon: Trophy, to: '/dashboard/leaderboard', badge: null },
   { label: 'Mon Profil', icon: User, to: '/dashboard/profile', badge: null },
 ];
@@ -147,7 +146,7 @@ export const DashboardPage = () => {
               Menu Principal
             </p>
             <div className="space-y-1">
-              {NAV_ITEMS.slice(0, 3).map((item) => {
+              {NAV_ITEMS.slice(0, 2).map((item) => {
                 const Icon = item.icon;
                 const isActive = item.to === '/dashboard';
                 return (
@@ -178,7 +177,7 @@ export const DashboardPage = () => {
               Progression
             </p>
             <div className="space-y-1">
-              {NAV_ITEMS.slice(3).map((item) => {
+              {NAV_ITEMS.slice(2).map((item) => {
                 const Icon = item.icon;
                 return (
                   <Link
@@ -227,10 +226,6 @@ export const DashboardPage = () => {
                 Bonjour, {userName} 👋
               </h2>
               <p className="text-xs text-on-surface-variant mt-0.5 capitalize">{today}</p>
-            </div>
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1 bg-khamoun-secondary/10 border border-khamoun-secondary/20 rounded-full">
-              <span className="animate-pulse w-2 h-2 bg-khamoun-secondary rounded-full"></span>
-              <span className="text-[10px] font-bold text-khamoun-secondary uppercase tracking-wider">Objectif BAC : J-45</span>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -386,34 +381,6 @@ export const DashboardPage = () => {
 
             {/* ── Colonne droite ───────────────────────────────────── */}
             <div className="hidden lg:flex flex-col gap-5 w-64 flex-shrink-0">
-
-              {/* Prochaine session */}
-              <div className="bg-[#1A0B2E] rounded-2xl p-5 relative overflow-hidden">
-                <div className="absolute -top-6 -right-6 w-24 h-24 bg-khamoun-primary/40 rounded-full blur-2xl pointer-events-none" />
-                <p className="text-[10px] tracking-[1.5px] uppercase font-semibold text-white/35 mb-2">
-                  Prochaine session
-                </p>
-                <p className="font-display font-bold text-white text-sm mb-4">
-                  Centre Abidjan-Plateau
-                </p>
-                <div className="space-y-2 mb-5">
-                  {[
-                    { key: 'Poste', val: 'PC-04' },
-                    { key: 'Date', val: 'Sam 28 Mars', accent: true },
-                    { key: 'Heure', val: '14h00 – 16h00' },
-                  ].map(({ key, val, accent }) => (
-                    <div key={key} className="flex justify-between text-xs">
-                      <span className="text-white/40">{key}</span>
-                      <span className={accent ? 'text-purple-300 font-semibold' : 'text-white/80'}>
-                        {val}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <button className="w-full bg-khamoun-primary hover:bg-khamoun-primary/90 text-white text-xs font-semibold py-2.5 rounded-xl transition-opacity">
-                  Modifier la réservation
-                </button>
-              </div>
 
               {/* Leaderboard */}
               <div className="bg-white rounded-2xl border border-purple-100 p-5">
