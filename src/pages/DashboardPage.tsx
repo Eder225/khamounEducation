@@ -93,7 +93,7 @@ const NAV_ITEMS = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export const DashboardPage = () => {
-  const { user, isAuthReady } = useContext(AuthContext);
+  const { user, role, isAuthReady } = useContext(AuthContext);
   const navigate = useNavigate();
   const [userData, setUserData] = useState<{ name?: string; role?: string } | null>(null);
 
