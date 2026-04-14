@@ -87,7 +87,14 @@ export const AuthPage = () => {
       const actualRole = userData.role;
 
       // Smart redirection based on actual role
-      if (actualRole === 'teacher' || actualRole === 'admin') {
+      // For admin, redirect based on the role they selected on the login page toggle
+      if (actualRole === 'admin') {
+        if (role === 'teacher') {
+          navigate('/teacher');
+        } else {
+          navigate('/dashboard');
+        }
+      } else if (actualRole === 'teacher') {
         navigate('/teacher');
       } else if (actualRole === 'student' || actualRole === 'parent') {
         navigate('/dashboard');
