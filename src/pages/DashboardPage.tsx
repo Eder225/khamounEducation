@@ -19,6 +19,8 @@ import {
   CalendarCheck,
   Medal,
   ChevronRight,
+  Search,
+  MessageCircle,
 } from 'lucide-react';
 import { Logo } from '../components/Logo';
 
@@ -132,112 +134,86 @@ export const DashboardPage = () => {
       <aside className="w-64 flex-shrink-0 h-full flex flex-col bg-[#1A0B2E] z-50">
 
         {/* Logo */}
-        <div className="px-6 py-5 border-b border-white/10">
+        <div className="px-6 py-5 border-b border-white/5">
           <div className="flex items-center gap-3">
             <Logo className="h-10 w-auto object-contain" />
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
-          <p className="px-3 mb-2 text-[10px] font-label font-semibold tracking-[1.8px] uppercase text-white/25">
-            Principal
-          </p>
-          {NAV_ITEMS.slice(0, 3).map((item) => {
-            const Icon = item.icon;
-            const isActive = item.to === '/dashboard';
-            return (
-              <Link
-                key={item.label}
-                to={item.to}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive
-                    ? 'bg-khamoun-primary text-white shadow-md shadow-purple-900/30'
-                    : 'text-white/50 hover:bg-white/8 hover:text-white/85'
-                }`}
-              >
-                <Icon size={17} className="flex-shrink-0" />
-                <span className="flex-1">{item.label}</span>
-                {item.badge && (
-                  <span className="bg-khamoun-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 px-3 py-6 space-y-8 overflow-y-auto">
+          <div>
+            <p className="px-3 mb-3 text-[10px] font-label font-bold tracking-[2px] uppercase text-white/20">
+              Menu Principal
+            </p>
+            <div className="space-y-1">
+              {NAV_ITEMS.slice(0, 3).map((item) => {
+                const Icon = item.icon;
+                const isActive = item.to === '/dashboard';
+                return (
+                  <Link
+                    key={item.label}
+                    to={item.to}
+                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                      isActive
+                        ? 'bg-khamoun-primary text-white shadow-lg shadow-khamoun-primary/20'
+                        : 'text-white/40 hover:bg-white/5 hover:text-white/80'
+                    }`}
+                  >
+                    <Icon size={18} className="flex-shrink-0" />
+                    <span className="flex-1">{item.label}</span>
+                    {item.badge && (
+                      <span className="bg-khamoun-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-lg">
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
 
-          <p className="px-3 mt-4 mb-2 text-[10px] font-label font-semibold tracking-[1.8px] uppercase text-white/25">
-            Progrès
-          </p>
-          {NAV_ITEMS.slice(3).map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.label}
-                to={item.to}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/50 hover:bg-white/8 hover:text-white/85 transition-all duration-200"
-              >
-                <Icon size={17} className="flex-shrink-0" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
+          <div>
+            <p className="px-3 mb-3 text-[10px] font-label font-bold tracking-[2px] uppercase text-white/20">
+              Progression
+            </p>
+            <div className="space-y-1">
+              {NAV_ITEMS.slice(3).map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.label}
+                    to={item.to}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-white/40 hover:bg-white/5 hover:text-white/80 transition-all duration-200"
+                  >
+                    <Icon size={18} className="flex-shrink-0" />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </nav>
 
-        {/* Nouvelle session CTA */}
-        <div className="px-4 pb-4">
-          <button className="w-full flex items-center justify-center gap-2 bg-khamoun-primary hover:bg-khamoun-primary/90 text-white text-sm font-semibold py-3 rounded-xl transition-opacity shadow-lg shadow-purple-900/30">
-            <Plus size={16} />
-            Nouvelle session
-          </button>
-        </div>
-
-        {/* Footer links */}
-        <div className="px-4 pb-4 border-t border-white/10 pt-4 space-y-1">
-          <Link
-            to="/dashboard/help"
-            className="flex items-center gap-3 px-3 py-2 rounded-xl text-white/40 hover:text-white/70 text-sm transition-colors"
-          >
-            <HelpCircle size={16} />
-            Aide
-          </Link>
+        {/* Bottom Actions */}
+        <div className="px-4 pb-6 space-y-2">
+          {role === 'admin' && (
+            <button 
+              onClick={() => navigate('/teacher')}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold text-khamoun-secondary bg-khamoun-secondary/10 border border-khamoun-secondary/20 hover:bg-khamoun-secondary/20 transition-all"
+            >
+              <User size={16} />
+              <span>Mode Enseignant</span>
+            </button>
+          )}
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-red-400 hover:bg-red-500/10 text-sm transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/30 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition-all"
           >
             <LogOut size={16} />
             Déconnexion
           </button>
         </div>
-
-        {/* User card */}
-        <div className="px-3 pb-5">
-          <div className="flex items-center gap-3 bg-white/5 rounded-xl p-3">
-            <div className="w-9 h-9 rounded-full bg-khamoun-primary flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-              {userInitial}
-            </div>
-            <div className="min-w-0">
-              <p className="text-white text-sm font-semibold truncate">{userName}</p>
-              <p className="text-white/35 text-[11px]">Terminale · Élève</p>
-            </div>
-          </div>
-        </div>
-
-        {role === 'admin' && (
-          <div className="px-3 pb-5 mt-auto border-t border-white/10 pt-4">
-            <p className="px-3 mb-2 text-[10px] font-label font-semibold tracking-[1.8px] uppercase text-white/25">
-              Administration
-            </p>
-            <button 
-              onClick={() => navigate('/teacher')}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-khamoun-secondary hover:bg-white/8 transition-all duration-200"
-            >
-              <User size={17} className="flex-shrink-0" />
-              <span>Espace Professeur</span>
-            </button>
-          </div>
-        )}
       </aside>
 
       {/* ── Main ─────────────────────────────────────────────────────── */}
@@ -245,23 +221,29 @@ export const DashboardPage = () => {
 
         {/* Topbar */}
         <header className="flex-shrink-0 bg-white border-b border-purple-100 px-8 h-16 flex items-center justify-between sticky top-0 z-40">
-          <div>
-            <h2 className="font-display font-bold text-lg text-[#1A0B2E] leading-none">
-              Bonjour, {userName} 👋
-            </h2>
-            <p className="text-xs text-on-surface-variant mt-0.5 capitalize">{today}</p>
+          <div className="flex items-center gap-4">
+            <div>
+              <h2 className="font-display font-bold text-lg text-[#1A0B2E] leading-none">
+                Bonjour, {userName} 👋
+              </h2>
+              <p className="text-xs text-on-surface-variant mt-0.5 capitalize">{today}</p>
+            </div>
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1 bg-khamoun-secondary/10 border border-khamoun-secondary/20 rounded-full">
+              <span className="animate-pulse w-2 h-2 bg-khamoun-secondary rounded-full"></span>
+              <span className="text-[10px] font-bold text-khamoun-secondary uppercase tracking-wider">Objectif BAC : J-45</span>
+            </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="bg-amber-50 text-amber-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-amber-200">
-              ⭐ 1 250 pts
-            </span>
-            <button className="w-9 h-9 rounded-full bg-purple-50 flex items-center justify-center text-khamoun-primary hover:bg-purple-100 transition-colors">
+            <div className="hidden sm:flex items-center gap-2 mr-2">
+              <span className="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-1 rounded-lg border border-amber-100">
+                ⭐ 1 250 pts
+              </span>
+            </div>
+            <button className="relative w-9 h-9 rounded-full bg-purple-50 flex items-center justify-center text-khamoun-primary hover:bg-purple-100 transition-colors">
               <Bell size={16} />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-khamoun-secondary rounded-full border-2 border-white"></span>
             </button>
-            <button className="w-9 h-9 rounded-full bg-purple-50 flex items-center justify-center text-khamoun-accent hover:bg-green-50 transition-colors">
-              <Award size={16} />
-            </button>
-            <div className="w-9 h-9 rounded-full bg-khamoun-primary flex items-center justify-center text-white text-sm font-bold border-2 border-purple-200">
+            <div className="w-9 h-9 rounded-lg bg-khamoun-primary flex items-center justify-center text-white text-sm font-bold shadow-sm shadow-khamoun-primary/20">
               {userInitial}
             </div>
           </div>
@@ -311,33 +293,55 @@ export const DashboardPage = () => {
 
               {/* Cours inachevés */}
               <div className="bg-white rounded-2xl border border-purple-100 p-6">
-                <div className="flex items-center justify-between mb-5">
-                  <h3 className="font-display font-bold text-base text-[#1A0B2E]">Cours inachevés</h3>
-                  <button className="text-xs text-khamoun-primary font-semibold flex items-center gap-1 hover:opacity-75 transition-opacity">
-                    Voir tout <ChevronRight size={13} />
-                  </button>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                  <h3 className="font-display font-bold text-base text-[#1A0B2E]">Mes Cours</h3>
+                  <div className="relative group">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-khamoun-primary transition-colors" size={14} />
+                    <input 
+                      type="text" 
+                      placeholder="Rechercher un cours..." 
+                      className="pl-9 pr-4 py-1.5 bg-purple-50/50 border border-purple-100 rounded-xl text-xs focus:outline-none focus:border-khamoun-primary focus:bg-white transition-all w-full sm:w-48"
+                    />
+                  </div>
                 </div>
+
+                <div className="flex gap-2 mb-6 overflow-x-auto pb-2 custom-scrollbar">
+                  {['Tous', 'Maths', 'Physique', 'Français', 'Anglais'].map((cat, i) => (
+                    <button 
+                      key={cat} 
+                      className={`px-4 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-all ${
+                        i === 0 ? 'bg-khamoun-primary text-white shadow-md shadow-khamoun-primary/20' : 'bg-purple-50 text-on-surface-variant hover:bg-purple-100'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+
                 <div className="space-y-4">
                   {COURSES.map((course) => (
-                    <div key={course.id} className="flex items-center gap-4">
-                      <div className={`w-10 h-10 ${course.color} rounded-xl flex items-center justify-center text-lg flex-shrink-0`}>
+                    <div key={course.id} className="group flex items-center gap-4 p-2 rounded-2xl hover:bg-purple-50/50 transition-colors cursor-pointer">
+                      <div className={`w-11 h-11 ${course.color} rounded-xl flex items-center justify-center text-lg flex-shrink-0 group-hover:scale-110 transition-transform`}>
                         {course.emoji}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-[#1A0B2E] truncate">{course.name}</p>
+                        <p className="text-sm font-bold text-[#1A0B2E] truncate">{course.name}</p>
                         <p className="text-[11px] text-on-surface-variant mt-0.5">
                           {course.subject} · {course.chapters} chapitres
                         </p>
                         <div className="h-1.5 bg-purple-50 rounded-full mt-2 overflow-hidden">
                           <div
-                            className={`h-full rounded-full ${course.progressColor} transition-all duration-500`}
+                            className={`h-full rounded-full ${course.progressColor} transition-all duration-700 ease-out`}
                             style={{ width: `${course.progress}%` }}
                           />
                         </div>
                       </div>
-                      <span className="text-xs font-bold text-khamoun-primary flex-shrink-0 w-9 text-right">
-                        {course.progress}%
-                      </span>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-[10px] font-bold text-khamoun-primary">
+                          {course.progress}%
+                        </span>
+                        <ChevronRight size={14} className="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -458,19 +462,29 @@ export const DashboardPage = () => {
                 </div>
               </div>
 
-              {/* Mini CTA */}
-              <div className="bg-khamoun-accent/10 border border-khamoun-accent/20 rounded-2xl p-5">
-                <p className="font-display font-bold text-sm text-[#1A0B2E] mb-1">
-                  Continue sur ta lancée ! 🚀
-                </p>
-                <p className="text-xs text-on-surface-variant mb-4">
-                  Tu es à 250 pts du 1er. Un quiz suffit.
-                </p>
+              {/* Mentor Widget */}
+              <div className="bg-white rounded-2xl border border-purple-100 p-5 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-khamoun-primary/5 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-110" />
+                <h3 className="font-display font-bold text-sm text-[#1A0B2E] mb-4 flex items-center gap-2">
+                  <MessageCircle size={15} className="text-khamoun-primary" />
+                  Ton Mentor
+                </h3>
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="relative">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-lg">
+                      👨‍🏫
+                    </div>
+                    <span className="absolute -bottom-1 -right-1 w-3 h-3 bg-khamoun-accent border-2 border-white rounded-full"></span>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-[#1A0B2E]">M. Kouadio</p>
+                    <p className="text-[10px] text-on-surface-variant">Disponible pour t'aider</p>
+                  </div>
+                </div>
                 <button
-                  onClick={() => navigate('/dashboard/courses')}
-                  className="w-full bg-khamoun-accent text-white text-xs font-semibold py-2.5 rounded-xl hover:opacity-90 transition-opacity"
+                  className="w-full bg-slate-900 text-white text-[11px] font-bold py-2.5 rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
                 >
-                  Reprendre un cours
+                  Poser une question
                 </button>
               </div>
             </div>
