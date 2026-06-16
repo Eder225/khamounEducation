@@ -2,7 +2,7 @@
 <div align="center">
   <img src="./public/logo.png" alt="Khamoun Education Logo" width="120" />
   <h1>Khamoun Education</h1>
-  <p><strong>Plateforme d'apprentissage vidéo pour les élèves du secondaire en Côte d'Ivoire</strong></p>
+  <p><strong>A video learning platform for secondary school students in Côte d'Ivoire</strong></p>
 
   <p>
     <img src="https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react" alt="React 18" />
@@ -16,121 +16,121 @@
 
 ---
 
-## À propos du projet
+## About
 
-**Khamoun Education** est une plateforme web qui connecte les élèves du secondaire ivoirien (6ème à Terminale) à des cours filmés directement en classe par leurs enseignants. Les professeurs enregistrent leurs cours en condition réelle, puis les publient sur la plateforme pour que les élèves puissent les réviser à leur rythme, depuis n'importe où.
+**Khamoun Education** is a web platform that connects Ivorian secondary school students (Grade 6 through Grade 12) with video lessons filmed directly in the classroom by their teachers. Teachers record their lessons in real conditions, then publish them on the platform so students can review them at their own pace, from anywhere.
 
-Le projet s'inscrit dans le programme du **MENA** (Ministère de l'Éducation Nationale et de l'Alphabétisation) et vise à démocratiser l'accès à une éducation de qualité à l'échelle nationale.
-
----
-
-## Fonctionnalités
-
-### Côté Élève
-- Tableau de bord personnalisé avec suivi de progression par matière
-- Accès aux cours vidéo classés par niveau (6ème → Terminale) et par matière
-- Suivi des devoirs et assignments transmis par les enseignants
-- Système de classement (leaderboard) pour stimuler l'engagement
-
-### Côté Enseignant
-- Upload de contenus pédagogiques : vidéos de cours (MP4), devoirs (PDF), quiz
-- Gestion des élèves par classe avec suivi de la moyenne et de la progression
-- Messagerie directe avec les élèves ou par groupe-classe
-- Statistiques de rendu (nombre d'élèves ayant soumis un devoir)
-
-### Général
-- Authentification sécurisée avec rôles distincts (`student`, `teacher`, `admin`)
-- Routes protégées selon le rôle de l'utilisateur
-- Design responsive, mobile-first
-- Animation de fond (réseau neuronal) pour une identité visuelle forte
+The project aligns with the **MENA** (Ministère de l'Éducation Nationale et de l'Alphabétisation) curriculum and aims to democratize access to quality education at a national scale.
 
 ---
 
-## Stack technique
+## Features
 
-| Couche | Technologie |
+### For Students
+- Personalized dashboard with per-subject progress tracking
+- Access to video lessons organized by grade level and subject
+- Homework and assignment tracking from teachers
+- Leaderboard system to encourage engagement
+
+### For Teachers
+- Upload course content: video lessons (MP4), homework (PDF), quizzes
+- Class management with per-student grade and progress tracking
+- Direct messaging with individual students or entire class groups
+- Submission statistics (number of students who turned in an assignment)
+
+### General
+- Secure authentication with distinct roles (`student`, `teacher`, `admin`)
+- Role-based protected routes
+- Responsive, mobile-first design
+- Animated neural network background for a strong visual identity
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
 |---|---|
 | Framework | React 18 + Vite 5 |
-| Langage | TypeScript 5.2 |
+| Language | TypeScript 5.2 |
 | Styling | Tailwind CSS 3.4 |
 | Backend / BaaS | Firebase (Auth + Firestore) |
-| Routage | React Router DOM 6 |
+| Routing | React Router DOM 6 |
 | Animations | Motion (Framer Motion) |
-| Icônes | Lucide React |
-| Déploiement | Vercel |
+| Icons | Lucide React |
+| Deployment | Vercel |
 
 ---
 
-## Architecture du projet
+## Project Structure
 
 ```
 src/
-├── components/          # Composants réutilisables (Navbar, Logo, ProtectedRoute…)
-├── contexts/            # AuthContext — gestion de l'état d'authentification global
-├── hooks/               # Hooks personnalisés
-├── lib/                 # Utilitaires Firebase (gestion d'erreurs, helpers)
+├── components/          # Reusable components (Navbar, Logo, ProtectedRoute…)
+├── contexts/            # AuthContext — global authentication state
+├── hooks/               # Custom hooks
+├── lib/                 # Firebase utilities (error handling, helpers)
 ├── pages/
-│   ├── LandingPage.tsx  # Page d'accueil publique
-│   ├── AuthPage.tsx     # Connexion / Inscription
-│   ├── JoinPage.tsx     # Page d'inscription (choix du rôle)
-│   ├── DashboardPage.tsx    # Tableau de bord élève
-│   └── TeacherDashboard.tsx # Tableau de bord enseignant
-├── firebase.ts          # Initialisation Firebase (Auth + Firestore)
-└── App.tsx              # Configuration des routes
+│   ├── LandingPage.tsx      # Public landing page
+│   ├── AuthPage.tsx         # Login / Sign up
+│   ├── JoinPage.tsx         # Registration page (role selection)
+│   ├── DashboardPage.tsx    # Student dashboard
+│   └── TeacherDashboard.tsx # Teacher dashboard
+├── firebase.ts          # Firebase initialization (Auth + Firestore)
+└── App.tsx              # Route configuration
 ```
 
 ---
 
-## Lancer le projet en local
+## Getting Started
 
-**Prérequis :** Node.js ≥ 18
+**Prerequisites:** Node.js ≥ 18
 
 ```bash
-# 1. Cloner le dépôt
+# 1. Clone the repository
 git clone https://github.com/Eder225/khamounEducation.git
 cd khamounEducation
 
-# 2. Installer les dépendances
+# 2. Install dependencies
 npm install
 
-# 3. Configurer Firebase
-# Renseigner vos clés dans firebase-applet-config.json
+# 3. Configure Firebase
+# Add your credentials to firebase-applet-config.json
 
-# 4. Démarrer le serveur de développement
+# 4. Start the development server
 npm run dev
 ```
 
-### Scripts disponibles
+### Available Scripts
 
 ```bash
-npm run dev       # Serveur de développement (Vite HMR)
-npm run build     # Build de production (TypeScript + Vite)
-npm run preview   # Prévisualiser le build local
-npm run lint      # Vérification ESLint
+npm run dev       # Development server with Vite HMR
+npm run build     # Production build (TypeScript + Vite)
+npm run preview   # Preview the production build locally
+npm run lint      # ESLint check
 ```
 
 ---
 
-## Design system
+## Design System
 
-L'interface adopte un style **Tech / Futuriste Léger** avec des éléments de glassmorphism et un fond animé (réseau neuronal).
+The UI follows a **Light Tech / Futuristic** aesthetic with glassmorphism elements and an animated neural network background.
 
-| Rôle | Couleur | Hex |
+| Role | Color | Hex |
 |---|---|---|
-| Primaire | Violet | `#8241b0` |
-| Secondaire | Rouge | `#d62839` |
-| Accentuation | Vert | `#6fb041` |
+| Primary | Purple | `#8241b0` |
+| Secondary | Red | `#d62839` |
+| Accent | Green | `#6fb041` |
 
-**Typographie :** Space Grotesk (titres) · Inter (corps de texte)
-
----
-
-## Auteur
-
-Développé par **Eder** — étudiant en BCA/B.Sc. à PP Savani University, Vadodara, Inde.
+**Typography:** Space Grotesk (headings) · Inter (body text)
 
 ---
 
-## Licence
+## Author
 
-Ce projet est privé. Tous droits réservés.
+Built by **Eder** — BCA/B.Sc. student at PP Savani University, Vadodara, India.
+
+---
+
+## License
+
+This project is private. All rights reserved.
